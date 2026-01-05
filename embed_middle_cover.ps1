@@ -1,7 +1,7 @@
 # embed_middle_cover.ps1
 Param(
-    [string]$FFMPEG = 'M:\000_YT-DLG\ffmpeg.exe',
-    [string]$FFPROBE = 'M:\000_YT-DLG\ffprobe.exe'
+    [string]$FFMPEG = 'C:\Path\ffmpeg.exe',
+    [string]$FFPROBE = 'C:\Path\ffprobe.exe'
 )
 
 # Basic checks
