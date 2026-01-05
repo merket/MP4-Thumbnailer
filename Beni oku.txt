@@ -1,0 +1,3 @@
+run-embed.bat dosyası powershell script'ini çalıştırır.
+Script aynı klasörde bulunan tüm mp4 dosyalarının uzunluğunu ölçüp, tam yarısından bir kare alarak bu kareyi dosyanın albüm yüzü (Önizleme görseli) olarak atar.
+Windows 10 Pro (22H2) ile test edilmiştir. 
