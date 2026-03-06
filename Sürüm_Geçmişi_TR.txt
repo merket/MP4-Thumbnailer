@@ -1,0 +1,96 @@
+embed_middle_cover - Sürüm Geçmişi
+=====================================
+
+
+v2.0.0
+-------
+
+Güvenlik
+
+  - Artık orijinal dosyalar hiçbir koşulda değiştirilmeyecek veya silinmeyecek
+  - İşlenen dosyalar, orijinal dosya adları korunarak "Thumbnailed" alt
+    klasörüne kopyalanacak
+  - Geçici dosyalar çalışma dizininde oluşturuluyor ve program çökse bile temizleniyorlar
+
+Çıktı Doğrulama
+
+  - ffmpeg hiç dosya üretmezse çıktı reddedilecek
+  - Sonuç 0 bayt ise çıktı reddedilecek
+  - Sonuç orijinal dosya boyutunun %50'sinden küçükse çıktı reddedilecek
+    yarım yazımlar ve sessiz hatalar bu şekilde yakalanacak
+  - Thumbnailed klasörüne kopyalama, "başarılı" sayılmadan önce boyut eşleşmesiyle doğrulanacak
+
+İşlem Sonrası Stream Doğrulama
+
+  - Çıktı dosyası oluşturulduktan sonra ffprobe çalışacak ve ses
+    stream sayısı orijinalle karşılaştırılacak
+  - Kaynakta ses varken çıktıda yoksa çıktı reddedilecek
+  - Çıktıdaki ses stream sayısı kaynaktan azsa çıktı reddedilecek
+	(Onaylı değişimler hariç)
+
+Hata Görünürlüğü
+
+  - ffmpeg hata çıktısı atılmak yerine artık yakalanıyor
+  - Gömme adımında başarısız olan dosyalar için tam ffmpeg hata mesajı
+    konsolda "ffmpeg says:" satırı altında gösterilecek
+
+Stream Eşleme
+
+  - Tüm dosya türlerini doğru işlemek için -map 0 -map -0:d -map 1
+    kullanıldı
+  - -map 0 ile kaynaktaki tüm stream'ler kopyalandı (video, ses, altyazı vb.)
+  - -map -0:d ile yalnızca veri tipi stream'ler çıkarıldı; AfterCodecs
+    dışa aktarıcısının eklediği ve MP4 konteynerinin desteklemediği tmcd
+    Apple/QuickTime zaman kodu parçası bu sebeple temizleniyor (Onay gerekli). Ses ve video
+    stream'leri bu işlemden etkilenmemektedir
+  - -map 1 ile yeni thumbnail attached picture stream'i olarak eklendi
+
+Stream Bilgisi Görüntüleme
+
+  - Her dosya için toplam stream sayısı ve ses varlığı terminalde gösterilecek
+  - Her stream; index, tür, codec ve ses stream'leri için kanal sayısı ile
+    örnekleme hızı bilgisiyle ayrı ayrı listelenecek
+  - Dışlanacak veri stream'leri konsolda açıkça işaretlendi
+
+Veri Parçası Onay İstemi
+
+  - Kaldırılacak veri parçaları ekranda gösterildi ve devam için Y/N
+    onayı istenecek
+  - N yanıtı (ya da Y dışında her hangi bir girdi) verilirse dosya hiçbir şey oluşturulmadan veya
+    değiştirilmeden atlanacak
+  - Veri parçaları kaldırılan dosyalar özet raporda "Changed" altında
+    listelenecek
+
+Yinelenen Dosya Tespiti
+
+  - İşlemeden önce çıktı dosya adının Thumbnailed klasöründe mevcut olup
+    olmadığı kontrol edilecek
+  - Mevcutsa üzerine yazılıp yazılmayacağı Y/N ile sorulacak
+
+Alt Klasör Dışlama
+
+  - Thumbnailed alt klasöründeki MP4 dosyaları işlem dışı bırakıldı;
+    script aynı klasörde tekrar çalıştırıldığında tamamlanmış dosyalar
+    yeniden işlenmeyecek
+
+Özet Rapor
+
+  - İşlem sonunda Completed, Skipped ve Failed sayıları gösterildi
+  - Veri parçaları kaldırılan dosyalar "Changed" altında isimle listelenecek
+  - Hata oluşmuşsa Failed sayısı kırmızı renkte gösterildi
+
+Sürüm Gösterimi
+
+  - Script başlarken terminalde sürüm numarası belirtilecek
+
+BAT Dosyası
+
+  - cd /d "%~dp0" eklenerek script, nasıl başlatılırsa başlatılsın her
+    zaman BAT dosyasının bulunduğu klasörden çalıştırılacak
+
+
+
+v1.0.0
+-------
+
+

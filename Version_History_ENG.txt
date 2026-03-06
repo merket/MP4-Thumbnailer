@@ -1,0 +1,91 @@
+embed_middle_cover - Version History
+=====================================
+
+
+v2.0.0
+-------
+
+Safety
+
+  - Originals are never modified or deleted under any circumstances
+  - Finished files are copied into a Thumbnailed subfolder, keeping original
+    filenames
+  - Temp files are created in the working directory and always cleaned up in
+    a finally block, ensuring removal even if the script crashes mid-process
+
+Output Validation
+
+  - Output rejected if ffmpeg produces no file
+  - Output rejected if result is 0 bytes
+  - Output rejected if result is less than 50% of the original file size,
+    catching partial writes and silent failures
+  - Copy to Thumbnailed folder verified by size match before counting as success
+
+Post-Process Stream Verification
+
+  - ffprobe is run on the output file after creation and audio stream count
+    is compared against the original
+  - Output rejected if source had audio but output does not
+  - Output rejected if output has fewer audio streams than the source
+	(Except confirmed changes)
+
+Error Visibility
+
+  - ffmpeg stderr captured instead of discarded
+  - Exact ffmpeg error message printed to console under "ffmpeg says:" when
+    a file fails at the embedding step
+
+Stream Mapping
+
+  - -map 0 -map -0:d -map 1 used to correctly handle all file types
+  - -map 0 copies all streams from source (video, audio, subtitles, etc.)
+  - -map -0:d subtracts data-type streams only, such as the tmcd
+    Apple/QuickTime timecode track embedded by AfterCodecs exporter, which
+    MP4 containers do not support. Audio and video are unaffected
+  - -map 1 adds the new thumbnail as an attached picture stream
+
+Stream Info Display
+
+  - Total stream count and audio presence displayed per file
+  - Each stream listed individually with index, type, codec, and for audio
+    streams, channel count and sample rate
+  - Data streams that will be excluded are clearly labelled
+
+Data Track Confirmation Prompt
+
+  - Script pauses and displays exactly which data tracks will be dropped
+    before asking Y/N to continue
+  - Answering N (or any key other than Y) skips the file without creating or modifying anything
+  - Files where data tracks were removed listed under "Changed" in summary
+
+Duplicate Detection
+
+  - Checks if output filename already exists in Thumbnailed folder before
+    processing
+  - User asked Y/N to overwrite or skip if duplicate found
+
+Subfolder Exclusion
+
+  - MP4 files inside the Thumbnailed subfolder excluded from processing,
+    preventing already completed files from being re-processed on re-run
+
+Summary Report
+
+  - Final summary shows Completed, Skipped, and Failed counts
+  - Files that had data tracks removed listed by name under "Changed"
+  - Failed count highlighted in red if any failures occurred
+
+Version Display
+
+  - Script prints version number at startup
+
+BAT File
+
+  - cd /d "%~dp0" added to ensure script always runs from the folder the
+    BAT file lives in, regardless of how it was launched
+
+
+
+v1.0.0
+-------
+
