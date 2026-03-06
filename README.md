@@ -5,6 +5,7 @@ Powershell script to update MP4 file thumbnails for windows. The script embeds t
 
 The run-embed.bat file launches the PowerShell script.
 The script scans all MP4 files located in the same folder, measures the duration of each video, captures a single frame from the exact midpoint, and embeds that frame as the file’s album artwork (preview thumbnail).
+Does not touch the original files. Creates a subfolder called "Thumbnailed" and moves the temp files into here after they finish without errors.
 
 
 
@@ -13,7 +14,7 @@ Tested on Windows 10 Pro (22H2).
 
 ## Installation
 
-Download the [latest release](https://github.com/merket/MP4-Thumbnailer/releases) latest release, move it to a desired location where the mp4 files are. Then double click the "run_embed.bat".
+Download the [latest release](https://github.com/merket/MP4-Thumbnailer/releases), move it to a desired location where the mp4 files are. Then double click the "run_embed.bat".
 
 Requires ffmpeg.exe and ffprobe.exe to work. You can download official builds from https://ffmpeg.org/download.html or a reliable Windows build at https://www.gyan.dev/ffmpeg/builds/.
 
